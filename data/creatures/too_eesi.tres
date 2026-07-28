@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CreatureData" format=3 uid="uid://c0wa77gfovirk"]
+
+[ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_3b56g"]
+[ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_gu12i"]
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_gu12i"]
+
+[sub_resource type="Resource" id="Resource_8wp3h"]
+script = ExtResource("1_gu12i")
+type = 5
+amount = 1
+metadata/_custom_type_script = "uid://dyn1fo7562cdl"
+
+[sub_resource type="Resource" id="Resource_gu12i"]
+script = ExtResource("1_3b56g")
+target_creature_id = &"suu_eesi"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_sapv3"]
+script = ExtResource("1_3b56g")
+target_creature_id = &"ak_ilbirs"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[resource]
+script = ExtResource("2_gu12i")
+id = &"too_eesi"
+name_key = &"creature.too_eesi.name"
+role_key = &"creature.too_eesi.role"
+description_key = &"creature.too_eesi.description"
+relationships = Array[ExtResource("1_3b56g")]([SubResource("Resource_gu12i"), SubResource("Resource_sapv3")])
+ability = SubResource("Resource_8wp3h")
+metadata/_custom_type_script = "uid://bakw3q0r1xofd"

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://eisikle2f4oi"]
+
+[ext_resource type="Script" uid="uid://draexvnk28qrf" path="res://scripts/gameplay/seat_slot.gd" id="1_kelwc"]
+
+[node name="SeatSlot" type="PanelContainer" unique_id=118844849]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_kelwc")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=140738005]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=248872216]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1445821112]
+layout_mode = 2
+text = "EMPTY"
+
+[node name="HappinessLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=124141654]
+layout_mode = 2
+text = "Happiness: —"
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=30242451]
+layout_mode = 2
+text = "EMPTY"

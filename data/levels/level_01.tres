@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://bwawx35ilyjue"]
+
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="1_r1f35"]
+[ext_resource type="Script" uid="uid://cowv3n63whp61" path="res://scripts/data/level_data.gd" id="2_55y67"]
+[ext_resource type="Resource" uid="uid://gq2syrkdq2sn" path="res://data/creatures/umai_ene.tres" id="2_y1woe"]
+[ext_resource type="Resource" uid="uid://dupu5lcnxntgm" path="res://data/creatures/alpakarakush.tres" id="3_qg5lk"]
+[ext_resource type="Resource" uid="uid://4hdgbyxy0vjb" path="res://data/creatures/albarsty.tres" id="4_bcktr"]
+[ext_resource type="Resource" uid="uid://5g3x6fn0gw5g" path="res://data/creatures/zhelmoguz_kempir.tres" id="5_6r1wk"]
+[ext_resource type="Resource" uid="uid://brbxqu8apdutt" path="res://data/hosts/harmony_spirit.tres" id="6_8rkjy"]
+
+[resource]
+script = ExtResource("2_55y67")
+id = &"level_01"
+title_key = &"level.level_01.title"
+host = ExtResource("6_8rkjy")
+creatures = Array[ExtResource("1_r1f35")]([ExtResource("2_y1woe"), ExtResource("3_qg5lk"), ExtResource("4_bcktr"), ExtResource("5_6r1wk")])
+required_happiness = 10
+metadata/_custom_type_script = "uid://cowv3n63whp61"

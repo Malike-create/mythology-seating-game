@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://tpeh3n0hrqsu"]
+
+[ext_resource type="Script" uid="uid://chb1dty1beih7" path="res://scripts/tests/host_objective_test.gd" id="1_h4wc8"]
+
+[node name="HostObjectiveTest" type="Node2D" unique_id=962461730]
+script = ExtResource("1_h4wc8")

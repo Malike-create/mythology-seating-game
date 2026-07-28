@@ -1,0 +1,29 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+# Godot generated cache
+.godot/
+
+# Generated translation files
+*.translation
+
+# Exported builds
+build/
+builds/
+export/
+exports/
+
+# Editor settings
+.vscode/
+.idea/
+
+# Windows and macOS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*~

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="CreatureData" format=3 uid="uid://5g3x6fn0gw5g"]
+
+[ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_3mbq2"]
+[ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_480nq"]
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_480nq"]
+
+[sub_resource type="Resource" id="Resource_2ll11"]
+script = ExtResource("1_480nq")
+type = 2
+amount = 1
+target_category = 2
+metadata/_custom_type_script = "uid://dyn1fo7562cdl"
+
+[sub_resource type="Resource" id="Resource_t6g3p"]
+script = ExtResource("1_3mbq2")
+target_creature_id = &"albarsty"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_dlubq"]
+script = ExtResource("1_3mbq2")
+target_creature_id = &"umai_ene"
+attitude = 2
+modifier = -2
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_v3rpx"]
+script = ExtResource("1_3mbq2")
+target_creature_id = &"zheztyrnak"
+attitude = 2
+modifier = -2
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[resource]
+script = ExtResource("2_480nq")
+id = &"zhelmoguz_kempir"
+category = 2
+name_key = &"creature.zhelmoguz_kempir.namepakarakush.name"
+role_key = &"creature.zhelmoguz_kempir.role"
+description_key = &"creature.zhelmoguz_kempir.description"
+relationships = Array[ExtResource("1_3mbq2")]([SubResource("Resource_t6g3p"), SubResource("Resource_dlubq"), SubResource("Resource_v3rpx")])
+ability = SubResource("Resource_2ll11")
+metadata/_custom_type_script = "uid://bakw3q0r1xofd"

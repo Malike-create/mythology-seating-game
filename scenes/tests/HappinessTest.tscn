@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://62w5d5vdxqf1"]
+
+[ext_resource type="Script" uid="uid://plq7stspdrro" path="res://scenes/tests/happiness_test.gd" id="1_jw3l1"]
+
+[node name="HappinessTest" type="Node2D" unique_id=1535854052]
+script = ExtResource("1_jw3l1")

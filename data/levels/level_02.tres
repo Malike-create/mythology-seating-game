@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://b7wj6asir27jg"]
+
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="1_tpd5n"]
+[ext_resource type="Script" uid="uid://cowv3n63whp61" path="res://scripts/data/level_data.gd" id="2_aib7a"]
+[ext_resource type="Resource" uid="uid://qmip6s3saacl" path="res://data/creatures/ak_ilbirs.tres" id="2_bsgu1"]
+[ext_resource type="Resource" uid="uid://gq2syrkdq2sn" path="res://data/creatures/umai_ene.tres" id="3_ri5om"]
+[ext_resource type="Resource" uid="uid://hpmjyb3j80w0" path="res://data/creatures/suu_eesi.tres" id="4_pd480"]
+[ext_resource type="Resource" uid="uid://c0wa77gfovirk" path="res://data/creatures/too_eesi.tres" id="5_cls38"]
+[ext_resource type="Resource" uid="uid://cngl8webrgr3m" path="res://data/creatures/azhydaar.tres" id="6_c3pel"]
+[ext_resource type="Resource" uid="uid://brbxqu8apdutt" path="res://data/hosts/harmony_spirit.tres" id="7_mpxrr"]
+
+[resource]
+script = ExtResource("2_aib7a")
+id = &"level_02"
+title_key = &"level.level_02.title"
+host = ExtResource("7_mpxrr")
+creatures = Array[ExtResource("1_tpd5n")]([ExtResource("2_bsgu1"), ExtResource("3_ri5om"), ExtResource("4_pd480"), ExtResource("5_cls38"), ExtResource("6_c3pel")])
+seat_count = 5
+required_happiness = 15
+metadata/_custom_type_script = "uid://cowv3n63whp61"

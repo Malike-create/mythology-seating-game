@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://y5m1amrh3lx0"]
+
+[ext_resource type="Script" uid="uid://dl8jldujkw4h0" path="res://scripts/gameplay/creature_card.gd" id="1_ot3pg"]
+
+[node name="CreatureCard" type="PanelContainer" unique_id=822416728]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ot3pg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1025130659]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer" unique_id=1530127257]
+layout_mode = 2
+text = "Creature"
+
+[node name="CategoryLabel" type="Label" parent="VBoxContainer" unique_id=431669494]
+layout_mode = 2
+text = "Category"

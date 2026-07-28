@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="HostData" format=3 uid="uid://brbxqu8apdutt"]
+
+[ext_resource type="Script" uid="uid://7aeobdstkf8k" path="res://scripts/data/host_data.gd" id="1_rd2w1"]
+
+[resource]
+script = ExtResource("1_rd2w1")
+id = &"harmony_spirit"
+name_key = &"host.harmony_spirit.name"
+description_key = &"host.harmony_spirit.description"
+metadata/_custom_type_script = "uid://7aeobdstkf8k"

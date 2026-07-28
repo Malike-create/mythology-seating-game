@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dnps2rb5fqh7u"]
+
+[ext_resource type="Script" uid="uid://omw5xsw7fo7y" path="res://scripts/gameplay/placement_controller.gd" id="1_0w2j2"]
+[ext_resource type="Script" uid="uid://l3j50yysa2xw" path="res://scripts/gameplay/gameplay_controller.gd" id="2_gh441"]
+[ext_resource type="Resource" uid="uid://b7wj6asir27jg" path="res://data/levels/level_02.tres" id="3_pa1on"]
+[ext_resource type="Script" uid="uid://b4oyxfttcfksl" path="res://scripts/gameplay/level_scene_builder.gd" id="4_elju3"]
+[ext_resource type="PackedScene" uid="uid://eisikle2f4oi" path="res://scenes/gameplay/seat_slot.tscn" id="5_lb4ud"]
+[ext_resource type="PackedScene" uid="uid://y5m1amrh3lx0" path="res://scenes/gameplay/creature_card.tscn" id="6_bhb63"]
+
+[node name="Gameplay" type="Control" unique_id=965140855]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlacementController" type="Node" parent="." unique_id=734415514 node_paths=PackedStringArray("seats_container", "cards_container")]
+script = ExtResource("1_0w2j2")
+seats_container = NodePath("../MainColumn/SeatsContainer")
+cards_container = NodePath("../MainColumn/CardsContainer")
+
+[node name="MainColumn" type="VBoxContainer" parent="." unique_id=901496356]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SeatsContainer" type="HBoxContainer" parent="MainColumn" unique_id=660545802]
+layout_mode = 2
+
+[node name="CardsContainer" type="HBoxContainer" parent="MainColumn" unique_id=612994312]
+layout_mode = 2
+
+[node name="StatusPanel" type="VBoxContainer" parent="MainColumn" unique_id=151308457]
+layout_mode = 2
+
+[node name="TotalHappinessLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=2050813248]
+layout_mode = 2
+text = "Total Happiness: 0"
+
+[node name="CriticalConflictsLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=677308346]
+layout_mode = 2
+text = "Critical Conflicts: 0"
+
+[node name="HostLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=314795288]
+layout_mode = 2
+text = "Host: Spirit of Harmony"
+
+[node name="ObjectiveLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=145779739]
+layout_mode = 2
+text = "Goal: Happiness >= 10 | Critical Conflicts <= 0"
+
+[node name="SubmitButton" type="Button" parent="MainColumn/StatusPanel" unique_id=972245326]
+layout_mode = 2
+text = "CHECK RESULT "
+
+[node name="ResultLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=1713453909]
+layout_mode = 2
+text = "Arrange all creatures "
+
+[node name="GameplayController" type="Node" parent="." unique_id=1433047611 node_paths=PackedStringArray("level_scene_builder", "placement_controller", "host_label", "objective_label", "total_happiness_label", "critical_conflicts_label", "submit_button", "result_label")]
+script = ExtResource("2_gh441")
+level_data = ExtResource("3_pa1on")
+level_scene_builder = NodePath("../LevelSceneBuilder")
+placement_controller = NodePath("../PlacementController")
+host_label = NodePath("../MainColumn/StatusPanel/HostLabel")
+objective_label = NodePath("../MainColumn/StatusPanel/ObjectiveLabel")
+total_happiness_label = NodePath("../MainColumn/StatusPanel/TotalHappinessLabel")
+critical_conflicts_label = NodePath("../MainColumn/StatusPanel/CriticalConflictsLabel")
+submit_button = NodePath("../MainColumn/StatusPanel/SubmitButton")
+result_label = NodePath("../MainColumn/StatusPanel/ResultLabel")
+
+[node name="LevelSceneBuilder" type="Node" parent="." unique_id=621199627 node_paths=PackedStringArray("seats_container", "cards_container")]
+script = ExtResource("4_elju3")
+seat_slot_scene = ExtResource("5_lb4ud")
+creature_card_scene = ExtResource("6_bhb63")
+seats_container = NodePath("../MainColumn/SeatsContainer")
+cards_container = NodePath("../MainColumn/CardsContainer")

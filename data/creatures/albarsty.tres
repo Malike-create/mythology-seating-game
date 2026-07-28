@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="CreatureData" format=3 uid="uid://4hdgbyxy0vjb"]
+
+[ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_a2ps8"]
+[ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_pmbs1"]
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_pmbs1"]
+
+[sub_resource type="Resource" id="Resource_lyl21"]
+script = ExtResource("1_pmbs1")
+type = 7
+amount = -1
+target = 1
+target_category = 0
+metadata/_custom_type_script = "uid://dyn1fo7562cdl"
+
+[sub_resource type="Resource" id="Resource_pmbs1"]
+script = ExtResource("1_a2ps8")
+target_creature_id = &"zhelmoguz_kempir"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_15y2r"]
+script = ExtResource("1_a2ps8")
+target_creature_id = &"azhydaar"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_fmkhe"]
+script = ExtResource("1_a2ps8")
+target_creature_id = &"umai_ene"
+attitude = 2
+modifier = -2
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_y8awx"]
+script = ExtResource("1_a2ps8")
+target_creature_id = &"alpakarakush"
+attitude = 2
+modifier = -2
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[resource]
+script = ExtResource("2_pmbs1")
+id = &"albarsty"
+category = 2
+name_key = &"creature.albarsty.name"
+role_key = &"creature.albarsty.role"
+description_key = &"creature.albarsty.description"
+relationships = Array[ExtResource("1_a2ps8")]([SubResource("Resource_pmbs1"), SubResource("Resource_15y2r"), SubResource("Resource_fmkhe"), SubResource("Resource_y8awx")])
+ability = SubResource("Resource_lyl21")
+metadata/_custom_type_script = "uid://bakw3q0r1xofd"

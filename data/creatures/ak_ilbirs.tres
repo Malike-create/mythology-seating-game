@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="CreatureData" format=3 uid="uid://qmip6s3saacl"]
+
+[ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_1nxco"]
+[ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_rutmx"]
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_rutmx"]
+
+[sub_resource type="Resource" id="Resource_h0bjp"]
+script = ExtResource("1_rutmx")
+type = 3
+amount = 1
+target_category = 0
+metadata/_custom_type_script = "uid://dyn1fo7562cdl"
+
+[sub_resource type="Resource" id="Resource_x2wqa"]
+script = ExtResource("1_1nxco")
+target_creature_id = &"alpakarakush"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_d7is4"]
+script = ExtResource("1_1nxco")
+target_creature_id = &"too_eesi"
+attitude = 1
+modifier = 1
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[sub_resource type="Resource" id="Resource_3htla"]
+script = ExtResource("1_1nxco")
+target_creature_id = &"azhydaar"
+attitude = 2
+modifier = -2
+metadata/_custom_type_script = "uid://dk3f6p1g22l4k"
+
+[resource]
+script = ExtResource("2_rutmx")
+id = &"ak_ilbirs"
+category = 0
+name_key = &"creature.ak_ilbirs.name"
+role_key = &"creature.ak_ilbirs.role"
+description_key = &"creature.ak_ilbirs.description"
+relationships = Array[ExtResource("1_1nxco")]([SubResource("Resource_x2wqa"), SubResource("Resource_d7is4"), SubResource("Resource_3htla")])
+ability = SubResource("Resource_h0bjp")
+metadata/_custom_type_script = "uid://bakw3q0r1xofd"
