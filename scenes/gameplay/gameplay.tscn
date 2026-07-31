@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b4oyxfttcfksl" path="res://scripts/gameplay/level_scene_builder.gd" id="4_elju3"]
 [ext_resource type="PackedScene" uid="uid://eisikle2f4oi" path="res://scenes/gameplay/seat_slot.tscn" id="5_lb4ud"]
 [ext_resource type="PackedScene" uid="uid://y5m1amrh3lx0" path="res://scenes/gameplay/creature_card.tscn" id="6_bhb63"]
+[ext_resource type="Script" uid="uid://672vt1mfvgjv" path="res://scripts/ui/back_to_levels_button.gd" id="7_gh441"]
 
 [node name="Gameplay" type="Control" unique_id=965140855]
 layout_mode = 3
@@ -76,3 +77,9 @@ seat_slot_scene = ExtResource("5_lb4ud")
 creature_card_scene = ExtResource("6_bhb63")
 seats_container = NodePath("../MainColumn/SeatsContainer")
 cards_container = NodePath("../MainColumn/CardsContainer")
+
+[node name="BackToLevelsButton" type="Button" parent="." unique_id=1095964669]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("7_gh441")

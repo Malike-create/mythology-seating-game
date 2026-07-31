@@ -32,6 +32,19 @@ var _current_table_result: TableHappinessResult
 
 
 func _ready() -> void:
+	if GameSession.has_selected_level():
+		level_data = GameSession.selected_level
+
+		print(
+			"Gameplay received selected level: ",
+			level_data.id
+		)
+
+	elif level_data != null:
+		print(
+			"Gameplay uses Inspector level: ",
+			level_data.id
+		)
 	_happiness_calculator = HappinessCalculator.new()
 	_objective_evaluator = HostObjectiveEvaluator.new()
 
