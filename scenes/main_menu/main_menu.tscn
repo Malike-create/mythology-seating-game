@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://et6ddjknbahg"]
+
+[ext_resource type="Script" uid="uid://b6sndn604nqja" path="res://scripts/ui/main_menu_controller.gd" id="1_fsom3"]
+
+[node name="MainMenu" type="Control" unique_id=145855351]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fsom3")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1967303991]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=442624481]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=511641996]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=239496704]
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=237857145]
+layout_mode = 2
+
+[node name="AlbumButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=289947008]
+layout_mode = 2
