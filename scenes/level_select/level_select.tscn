@@ -38,3 +38,6 @@ text = "LEVEL 01"
 custom_minimum_size = Vector2(340, 58)
 layout_mode = 2
 text = "LEVEL 02"
+
+[node name="BackToMainMenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=278438137]
+layout_mode = 2

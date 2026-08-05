@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://omw5xsw7fo7y" path="res://scripts/gameplay/placement_controller.gd" id="1_0w2j2"]
 [ext_resource type="Script" uid="uid://l3j50yysa2xw" path="res://scripts/gameplay/gameplay_controller.gd" id="2_gh441"]
-[ext_resource type="Resource" uid="uid://b7wj6asir27jg" path="res://data/levels/level_02.tres" id="3_pa1on"]
 [ext_resource type="Script" uid="uid://b4oyxfttcfksl" path="res://scripts/gameplay/level_scene_builder.gd" id="4_elju3"]
 [ext_resource type="PackedScene" uid="uid://eisikle2f4oi" path="res://scenes/gameplay/seat_slot.tscn" id="5_lb4ud"]
 [ext_resource type="PackedScene" uid="uid://y5m1amrh3lx0" path="res://scenes/gameplay/creature_card.tscn" id="6_bhb63"]
@@ -61,7 +60,6 @@ text = "Arrange all creatures "
 
 [node name="GameplayController" type="Node" parent="." unique_id=1433047611 node_paths=PackedStringArray("level_scene_builder", "placement_controller", "host_label", "objective_label", "total_happiness_label", "critical_conflicts_label", "submit_button", "result_label")]
 script = ExtResource("2_gh441")
-level_data = ExtResource("3_pa1on")
 level_scene_builder = NodePath("../LevelSceneBuilder")
 placement_controller = NodePath("../PlacementController")
 host_label = NodePath("../MainColumn/StatusPanel/HostLabel")
@@ -83,3 +81,37 @@ layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("7_gh441")
+
+[node name="ResultOverlay" type="ColorRect" parent="." unique_id=874274761]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CenterContainer" type="CenterContainer" parent="ResultOverlay" unique_id=1892388689]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ResultPanel" type="PanelContainer" parent="ResultOverlay/CenterContainer" unique_id=203747153]
+layout_mode = 2
+
+[node name="ResultVBox" type="VBoxContainer" parent="ResultOverlay/CenterContainer/ResultPanel" unique_id=567771563]
+layout_mode = 2
+
+[node name="ResultTitleLabel" type="Label" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox" unique_id=705923029]
+layout_mode = 2
+
+[node name="ResultDetailsLabel" type="Label" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox" unique_id=375692311]
+layout_mode = 2
+
+[node name="ButtonsRow" type="HBoxContainer" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox" unique_id=1492958673]
+layout_mode = 2
+
+[node name="NextLevelButton" type="Button" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow" unique_id=1949395490]
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow" unique_id=1109625524]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow" unique_id=349314951]
+layout_mode = 2

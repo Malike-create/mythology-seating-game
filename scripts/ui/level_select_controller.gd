@@ -5,6 +5,10 @@ const GAMEPLAY_SCENE_PATH: String = (
 	"res://scenes/gameplay/gameplay.tscn"
 )
 
+const MAIN_MENU_SCENE_PATH: String = (
+	"res://scenes/main_menu/main_menu.tscn"
+)
+
 const LEVEL_01: LevelData = preload(
 	"res://data/levels/level_01.tres"
 )
@@ -34,6 +38,10 @@ const LEVEL_02: LevelData = preload(
 	$CenterContainer/VBoxContainer/Level02Button
 )
 
+@onready var back_to_main_menu_button: Button = (
+	$CenterContainer/VBoxContainer/BackToMainMenuButton
+)
+
 
 func _ready() -> void:
 	_configure_interface()
@@ -49,77 +57,69 @@ func _ready() -> void:
 	call_deferred("_apply_layout")
 
 	print("LEVEL SELECT READY")
-	print("Level 01 signal connected: ",
+
+	print(
+		"Level 01 signal connected: ",
 		level_01_button.pressed.is_connected(
 			_on_level_01_pressed
 		)
 	)
-	print("Level 02 signal connected: ",
+
+	print(
+		"Level 02 signal connected: ",
 		level_02_button.pressed.is_connected(
 			_on_level_02_pressed
 		)
 	)
 
+	print(
+		"Back to main signal connected: ",
+		back_to_main_menu_button.pressed.is_connected(
+			_on_back_to_main_menu_pressed
+		)
+	)
+
 
 func _configure_interface() -> void:
-	## Показываем все узлы.
 	visible = true
 	center_container.visible = true
 	vbox_container.visible = true
 	title_label.visible = true
 	level_01_button.visible = true
 	level_02_button.visible = true
+	back_to_main_menu_button.visible = true
 
-	## Убираем ограничение максимального размера.
 	custom_maximum_size = Vector2(-1.0, -1.0)
 	center_container.custom_maximum_size = Vector2(-1.0, -1.0)
 	vbox_container.custom_maximum_size = Vector2(-1.0, -1.0)
 	title_label.custom_maximum_size = Vector2(-1.0, -1.0)
 	level_01_button.custom_maximum_size = Vector2(-1.0, -1.0)
 	level_02_button.custom_maximum_size = Vector2(-1.0, -1.0)
+	back_to_main_menu_button.custom_maximum_size = Vector2(-1.0, -1.0)
 
-	## Устанавливаем тексты.
 	title_label.text = "SELECT LEVEL"
 	level_01_button.text = "LEVEL 01"
 	level_02_button.text = "LEVEL 02"
+	back_to_main_menu_button.text = "BACK TO MAIN MENU"
 
-	## Заголовок не должен перехватывать мышь.
-	title_label.mouse_filter = (
-		Control.MOUSE_FILTER_IGNORE
-	)
+	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	center_container.mouse_filter = Control.MOUSE_FILTER_PASS
+	vbox_container.mouse_filter = Control.MOUSE_FILTER_PASS
 
-	## Контейнеры пропускают события к кнопкам.
-	center_container.mouse_filter = (
-		Control.MOUSE_FILTER_PASS
-	)
-
-	vbox_container.mouse_filter = (
-		Control.MOUSE_FILTER_PASS
-	)
-
-	## Кнопки принимают события мыши.
-	level_01_button.mouse_filter = (
+	level_01_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	level_02_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	back_to_main_menu_button.mouse_filter = (
 		Control.MOUSE_FILTER_STOP
 	)
 
-	level_02_button.mouse_filter = (
-		Control.MOUSE_FILTER_STOP
-	)
-
-	## Убеждаемся, что кнопки активны.
 	level_01_button.disabled = false
 	level_02_button.disabled = false
+	back_to_main_menu_button.disabled = false
 
-	## Разрешаем управление с клавиатуры.
-	level_01_button.focus_mode = (
-		Control.FOCUS_ALL
-	)
+	level_01_button.focus_mode = Control.FOCUS_ALL
+	level_02_button.focus_mode = Control.FOCUS_ALL
+	back_to_main_menu_button.focus_mode = Control.FOCUS_ALL
 
-	level_02_button.focus_mode = (
-		Control.FOCUS_ALL
-	)
-
-	## Заголовок.
 	title_label.horizontal_alignment = (
 		HORIZONTAL_ALIGNMENT_CENTER
 	)
@@ -138,8 +138,17 @@ func _configure_interface() -> void:
 		28
 	)
 
-	## Первая кнопка.
 	level_01_button.custom_minimum_size = Vector2(
+		340.0,
+		58.0
+	)
+
+	level_02_button.custom_minimum_size = Vector2(
+		340.0,
+		58.0
+	)
+
+	back_to_main_menu_button.custom_minimum_size = Vector2(
 		340.0,
 		58.0
 	)
@@ -149,21 +158,19 @@ func _configure_interface() -> void:
 		22
 	)
 
-	## Вторая кнопка.
-	level_02_button.custom_minimum_size = Vector2(
-		340.0,
-		58.0
-	)
-
 	level_02_button.add_theme_font_size_override(
 		"font_size",
 		22
 	)
 
-	## Расстояние между элементами.
+	back_to_main_menu_button.add_theme_font_size_override(
+		"font_size",
+		20
+	)
+
 	vbox_container.custom_minimum_size = Vector2(
 		340.0,
-		210.0
+		285.0
 	)
 
 	vbox_container.add_theme_constant_override(
@@ -187,13 +194,19 @@ func _connect_buttons() -> void:
 			_on_level_02_pressed
 		)
 
+	if not back_to_main_menu_button.pressed.is_connected(
+		_on_back_to_main_menu_pressed
+	):
+		back_to_main_menu_button.pressed.connect(
+			_on_back_to_main_menu_pressed
+		)
+
 
 func _apply_layout() -> void:
 	var viewport_size: Vector2 = (
 		get_viewport_rect().size
 	)
 
-	## Размер корневого LevelSelect.
 	anchor_left = 0.0
 	anchor_top = 0.0
 	anchor_right = 0.0
@@ -204,7 +217,6 @@ func _apply_layout() -> void:
 	offset_right = viewport_size.x
 	offset_bottom = viewport_size.y
 
-	## CenterContainer занимает всё окно.
 	center_container.anchor_left = 0.0
 	center_container.anchor_top = 0.0
 	center_container.anchor_right = 0.0
@@ -234,14 +246,19 @@ func _on_level_02_pressed() -> void:
 	_start_level(LEVEL_02)
 
 
-func _start_level(level: LevelData) -> void:
+func _start_level(
+	level: LevelData
+) -> void:
 	if level == null:
 		push_error(
 			"LevelSelect: selected level is null."
 		)
 		return
 
-	print("Starting level: ", level.id)
+	print(
+		"Starting level: ",
+		level.id
+	)
 
 	GameSession.select_level(level)
 
@@ -250,12 +267,32 @@ func _start_level(level: LevelData) -> void:
 		GAMEPLAY_SCENE_PATH
 	)
 
-	var error: Error = get_tree().change_scene_to_file(
-		GAMEPLAY_SCENE_PATH
+	var error: Error = (
+		get_tree().change_scene_to_file(
+			GAMEPLAY_SCENE_PATH
+		)
 	)
 
 	if error != OK:
 		push_error(
 			"LevelSelect: failed to open gameplay scene. Error: "
+			+ str(error)
+		)
+
+
+func _on_back_to_main_menu_pressed() -> void:
+	print("BACK TO MAIN MENU BUTTON PRESSED")
+
+	GameSession.clear_selected_level()
+
+	var error: Error = (
+		get_tree().change_scene_to_file(
+			MAIN_MENU_SCENE_PATH
+		)
+	)
+
+	if error != OK:
+		push_error(
+			"LevelSelect: failed to open main menu. Error: "
 			+ str(error)
 		)
