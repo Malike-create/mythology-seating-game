@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://bb7qama0uc52b"]
+
+[ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="1_rcubj"]
+[ext_resource type="Resource" uid="uid://gq2syrkdq2sn" path="res://data/creatures/umai_ene.tres" id="2_ef0fe"]
+[ext_resource type="Resource" uid="uid://dupu5lcnxntgm" path="res://data/creatures/alpakarakush.tres" id="3_efhu2"]
+[ext_resource type="Resource" uid="uid://5g3x6fn0gw5g" path="res://data/creatures/zhelmoguz_kempir.tres" id="4_rdm2k"]
+[ext_resource type="Resource" uid="uid://4hdgbyxy0vjb" path="res://data/creatures/albarsty.tres" id="5_g216a"]
+[ext_resource type="Resource" uid="uid://kd5rb88uw5wg" path="res://data/hosts/discord_spirit.tres" id="6_rcubj"]
+[ext_resource type="Resource" uid="uid://smrhre1yyslt" path="res://data/locations/spirit_yurt.tres" id="7_7cien"]
+[ext_resource type="Script" uid="uid://cowv3n63whp61" path="res://scripts/data/level_data.gd" id="8_rpawh"]
+
+[resource]
+script = ExtResource("8_rpawh")
+id = &"discord_test"
+location = ExtResource("7_7cien")
+host = ExtResource("6_rcubj")
+creatures = Array[ExtResource("1_rcubj")]([ExtResource("2_ef0fe"), ExtResource("3_efhu2"), ExtResource("4_rdm2k"), ExtResource("5_g216a")])
+required_happiness = 10
+minimum_critical_conflicts = 1
+metadata/_custom_type_script = "uid://cowv3n63whp61"

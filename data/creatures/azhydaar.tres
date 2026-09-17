@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_24o1w"]
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_lhpmk"]
+[ext_resource type="Texture2D" uid="uid://cupoqqyc282h4" path="res://art/creatures/portraits/azhydaar.jpg" id="2_8x1ij"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_lhpmk"]
 
 [sub_resource type="Resource" id="Resource_d7is4"]
@@ -51,4 +52,5 @@ role_key = &"creature.azhydaar.role"
 description_key = &"creature.azhydaar.description"
 relationships = Array[ExtResource("1_24o1w")]([SubResource("Resource_480nq"), SubResource("Resource_h0bjp"), SubResource("Resource_5edlb"), SubResource("Resource_0sfcd"), SubResource("Resource_mpx7a")])
 ability = SubResource("Resource_d7is4")
+portrait = ExtResource("2_8x1ij")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"

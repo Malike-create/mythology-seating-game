@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://b7wj6asir27jg"]
 
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="1_tpd5n"]
+[ext_resource type="Resource" uid="uid://dedb5bemxyid2" path="res://data/locations/mountain_lake.tres" id="2_2lq7d"]
 [ext_resource type="Script" uid="uid://cowv3n63whp61" path="res://scripts/data/level_data.gd" id="2_aib7a"]
 [ext_resource type="Resource" uid="uid://qmip6s3saacl" path="res://data/creatures/ak_ilbirs.tres" id="2_bsgu1"]
 [ext_resource type="Resource" uid="uid://gq2syrkdq2sn" path="res://data/creatures/umai_ene.tres" id="3_ri5om"]
@@ -11,8 +12,8 @@
 
 [resource]
 script = ExtResource("2_aib7a")
-id = &"level_02"
-title_key = &"level.level_02.title"
+id = &"level_02 "
+location = ExtResource("2_2lq7d")
 host = ExtResource("7_mpxrr")
 creatures = Array[ExtResource("1_tpd5n")]([ExtResource("2_bsgu1"), ExtResource("3_ri5om"), ExtResource("4_pd480"), ExtResource("5_cls38"), ExtResource("6_c3pel")])
 seat_count = 5

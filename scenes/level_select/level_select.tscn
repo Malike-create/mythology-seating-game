@@ -29,15 +29,8 @@ layout_mode = 2
 text = "SELECT LEVEL "
 horizontal_alignment = 1
 
-[node name="Level01Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1019544205]
-custom_minimum_size = Vector2(340, 58)
+[node name="LevelsContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=346381998]
 layout_mode = 2
-text = "LEVEL 01"
-
-[node name="Level02Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1577384922]
-custom_minimum_size = Vector2(340, 58)
-layout_mode = 2
-text = "LEVEL 02"
 
 [node name="BackToMainMenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=278438137]
 layout_mode = 2

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_mv4c5"]
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_xuscy"]
+[ext_resource type="Texture2D" uid="uid://cqvuuhfbnrhwe" path="res://art/creatures/portraits/umai_ene.jpg" id="2_k2e1y"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_xuscy"]
 
 [sub_resource type="Resource" id="Resource_xuscy"]
@@ -62,4 +63,5 @@ role_key = &"creature.umai_ene.role"
 description_key = &"creature.umai_ene.description"
 relationships = Array[ExtResource("1_mv4c5")]([SubResource("Resource_k2e1y"), SubResource("Resource_bvke8"), SubResource("Resource_qui75"), SubResource("Resource_5eqbg"), SubResource("Resource_iaj83"), SubResource("Resource_c0fk2")])
 ability = SubResource("Resource_xuscy")
+portrait = ExtResource("2_k2e1y")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"

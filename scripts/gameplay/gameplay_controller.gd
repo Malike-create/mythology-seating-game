@@ -10,8 +10,8 @@ const GAMEPLAY_SCENE_PATH: String = (
 	"res://scenes/gameplay/gameplay.tscn"
 )
 
-const LEVEL_02: LevelData = preload(
-	"res://data/levels/level_02.tres"
+const LEVEL_CATALOG := preload(
+	"res://data/levels/level_catalog.tres"
 )
 
 
@@ -29,6 +29,7 @@ const LEVEL_02: LevelData = preload(
 @export_category("UI")
 
 @export var host_label: Label
+@export var location_label: Label
 @export var objective_label: Label
 
 @export var total_happiness_label: Label
@@ -36,7 +37,12 @@ const LEVEL_02: LevelData = preload(
 
 @export var submit_button: Button
 @export var result_label: Label
+@onready var location_background: TextureRect = $"../LocationBackground"
 
+
+## -------------------------
+## RESULT OVERLAY
+## -------------------------
 
 @onready var result_overlay: ColorRect = (
 	$"../ResultOverlay"
@@ -62,6 +68,7 @@ const LEVEL_02: LevelData = preload(
 	$"../ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ResultDetailsLabel"
 )
 
+
 @onready var buttons_row: HBoxContainer = (
 	$"../ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow"
 )
@@ -76,6 +83,47 @@ const LEVEL_02: LevelData = preload(
 
 @onready var result_back_button: Button = (
 	$"../ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow/BackButton"
+)
+
+
+## -------------------------
+## INTRO OVERLAY
+## -------------------------
+
+@onready var intro_overlay: ColorRect = (
+	$"../IntroOverlay"
+)
+
+@onready var intro_center_container: CenterContainer = (
+	$"../IntroOverlay/CenterContainer"
+)
+
+@onready var intro_panel: PanelContainer = (
+	$"../IntroOverlay/CenterContainer/IntroPanel"
+)
+
+@onready var intro_vbox: VBoxContainer = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox"
+)
+
+@onready var level_title_label: Label = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox/LevelTitleLabel"
+)
+
+@onready var location_intro_label: Label = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox/LocationIntroLabel"
+)
+
+@onready var host_intro_label: Label = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox/HostIntroLabel"
+)
+
+@onready var goal_intro_label: Label = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox/GoalIntroLabel"
+)
+
+@onready var start_level_button: Button = (
+	$"../IntroOverlay/CenterContainer/IntroPanel/IntroVBox/StartLevelButton"
 )
 
 
@@ -140,14 +188,21 @@ func _ready() -> void:
 		)
 
 	_connect_result_buttons()
+	_connect_intro_button()
+
 	_configure_interface()
 	_configure_result_overlay()
+	_configure_intro_overlay()
 
 	_refresh_level_ui()
 	_refresh_happiness()
+	_refresh_intro_ui()
+
+	_show_intro_overlay()
 
 	print("GAMEPLAY HUD READY")
 	print("RESULT OVERLAY READY")
+	print("INTRO OVERLAY READY")
 
 
 func _validate_dependencies() -> bool:
@@ -172,9 +227,33 @@ func _validate_dependencies() -> bool:
 	return true
 
 
+## =========================================================
+## MAIN GAMEPLAY UI
+## =========================================================
+
 func _configure_interface() -> void:
+	if location_background != null:
+		location_background.set_anchors_and_offsets_preset(
+			Control.PRESET_FULL_RECT
+		)
+
+		location_background.expand_mode = (
+			TextureRect.EXPAND_IGNORE_SIZE
+		)
+
+		location_background.stretch_mode = (
+			TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		)
+
+		location_background.mouse_filter = (
+			Control.MOUSE_FILTER_IGNORE
+		)
+
 	if host_label != null:
 		host_label.visible = true
+
+	if location_label != null:
+		location_label.visible = true
 
 	if objective_label != null:
 		objective_label.visible = true
@@ -202,8 +281,609 @@ func _configure_interface() -> void:
 		)
 
 
+func _refresh_level_ui() -> void:
+	if level_data == null:
+		return
+
+	# Automatically use the background assigned to the current LocationData.
+	if location_background != null:
+		if level_data.location != null:
+			location_background.texture = level_data.location.background
+		else:
+			location_background.texture = null
+
+	if host_label != null:
+		if level_data.host != null:
+			var host_key: String = String(
+				level_data.host.name_key
+			)
+
+			var host_name: String = tr(host_key)
+
+			if host_name == host_key:
+				host_name = _format_display_name(
+					String(level_data.host.id)
+				)
+
+			host_label.text = (
+				"Host: "
+				+ host_name
+			)
+		else:
+			host_label.text = "Host: None"
+
+	if location_label != null:
+		if level_data.location != null:
+			var location_key: String = String(
+				level_data.location.name_key
+			)
+
+			var location_name: String = tr(
+				location_key
+			)
+
+			if location_name == location_key:
+				location_name = _format_display_name(
+					String(level_data.location.id)
+				)
+
+			location_label.text = (
+				"Location: "
+				+ location_name
+			)
+		else:
+			location_label.text = "Location: None"
+
+	if objective_label == null:
+		return
+
+	if level_data.host == null:
+		objective_label.text = "Goal: None"
+		return
+
+	match level_data.host.objective_type:
+		HostData.ObjectiveType.HARMONY:
+			objective_label.text = (
+				"Goal:\n"
+				+ "Happiness >= "
+				+ str(level_data.required_happiness)
+				+ "\nCritical Conflicts <= "
+				+ str(level_data.max_critical_conflicts)
+			)
+
+		HostData.ObjectiveType.DISCORD:
+			objective_label.text = (
+				"Goal:\n"
+				+ "Happiness <= "
+				+ str(level_data.maximum_happiness)
+				+ "\nCritical Conflicts >= "
+				+ str(level_data.minimum_critical_conflicts)
+			)
+
+		HostData.ObjectiveType.NATURE:
+			objective_label.text = (
+				"Goal:\n"
+				+ "Nature objective is not implemented yet."
+			)
+
+
+## =========================================================
+## INTRO OVERLAY
+## =========================================================
+
+func _connect_intro_button() -> void:
+	if not start_level_button.pressed.is_connected(
+		_on_start_level_pressed
+	):
+		start_level_button.pressed.connect(
+			_on_start_level_pressed
+		)
+
+
+func _configure_intro_overlay() -> void:
+	intro_overlay.visible = false
+
+	intro_overlay.color = Color(
+		0.0,
+		0.0,
+		0.0,
+		0.82
+	)
+
+	intro_overlay.mouse_filter = (
+		Control.MOUSE_FILTER_STOP
+	)
+
+	intro_overlay.z_index = 300
+
+	intro_overlay.set_anchors_and_offsets_preset(
+		Control.PRESET_FULL_RECT
+	)
+
+	intro_center_container.set_anchors_and_offsets_preset(
+		Control.PRESET_FULL_RECT
+	)
+
+	intro_panel.custom_minimum_size = Vector2(
+		560.0,
+		390.0
+	)
+
+	intro_vbox.custom_minimum_size = Vector2(
+		520.0,
+		350.0
+	)
+
+	intro_vbox.add_theme_constant_override(
+		"separation",
+		18
+	)
+
+	level_title_label.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER
+	)
+
+	level_title_label.vertical_alignment = (
+		VERTICAL_ALIGNMENT_CENTER
+	)
+
+	level_title_label.add_theme_font_size_override(
+		"font_size",
+		34
+	)
+
+	location_intro_label.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER
+	)
+
+	location_intro_label.add_theme_font_size_override(
+		"font_size",
+		24
+	)
+
+	host_intro_label.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER
+	)
+
+	host_intro_label.add_theme_font_size_override(
+		"font_size",
+		22
+	)
+
+	goal_intro_label.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER
+	)
+
+	goal_intro_label.vertical_alignment = (
+		VERTICAL_ALIGNMENT_CENTER
+	)
+
+	goal_intro_label.autowrap_mode = (
+		TextServer.AUTOWRAP_WORD_SMART
+	)
+
+	goal_intro_label.custom_minimum_size = Vector2(
+		500.0,
+		130.0
+	)
+
+	goal_intro_label.add_theme_font_size_override(
+		"font_size",
+		20
+	)
+
+	start_level_button.text = "START LEVEL"
+
+	start_level_button.custom_minimum_size = Vector2(
+		220.0,
+		58.0
+	)
+
+	start_level_button.focus_mode = (
+		Control.FOCUS_ALL
+	)
+
+
+func _refresh_intro_ui() -> void:
+	if level_data == null:
+		return
+
+	level_title_label.text = (
+		_format_display_name(
+			String(level_data.id)
+		).to_upper()
+	)
+
+	if level_data.location != null:
+		location_intro_label.text = (
+			"Location: "
+			+ _format_display_name(
+				String(level_data.location.id)
+			)
+		)
+	else:
+		location_intro_label.text = (
+			"Location: None"
+		)
+
+	if level_data.host != null:
+		host_intro_label.text = (
+			"Host: "
+			+ _format_display_name(
+				String(level_data.host.id)
+			)
+		)
+	else:
+		host_intro_label.text = (
+			"Host: None"
+		)
+
+	if level_data.host == null:
+		goal_intro_label.text = "Goal: None"
+		return
+
+	match level_data.host.objective_type:
+		HostData.ObjectiveType.HARMONY:
+			goal_intro_label.text = (
+				"Goal\n\n"
+				+ "Reach at least "
+				+ str(level_data.required_happiness)
+				+ " Happiness\n"
+				+ "Critical Conflicts allowed: "
+				+ str(level_data.max_critical_conflicts)
+			)
+
+		HostData.ObjectiveType.DISCORD:
+			goal_intro_label.text = (
+				"Goal\n\n"
+				+ "Keep Happiness at or below "
+				+ str(level_data.maximum_happiness)
+				+ "\nCreate at least "
+				+ str(level_data.minimum_critical_conflicts)
+				+ " Critical Conflicts"
+			)
+
+		HostData.ObjectiveType.NATURE:
+			goal_intro_label.text = (
+				"Goal\n\n"
+				+ "Nature objective is not implemented yet."
+			)
+
+
+func _show_intro_overlay() -> void:
+	intro_overlay.visible = true
+	start_level_button.grab_focus()
+
+
+func _on_start_level_pressed() -> void:
+	print("START LEVEL PRESSED")
+
+	intro_overlay.visible = false
+
+
+## =========================================================
+## HAPPINESS
+## =========================================================
+
+func _on_placement_changed() -> void:
+	if result_overlay.visible:
+		result_overlay.visible = false
+
+	if result_label != null:
+		result_label.text = ""
+
+	_refresh_happiness()
+
+
+func _refresh_happiness() -> void:
+	if placement_controller == null:
+		return
+
+	if level_data == null:
+		return
+
+	var placements: Array[CreatureData] = (
+		placement_controller.get_placements()
+	)
+
+	_current_table_result = (
+		_happiness_calculator.evaluate_table(
+			placements,
+			level_data.wrap_around
+		)
+	)
+
+	_refresh_global_ui(
+		_current_table_result,
+		placements
+	)
+
+	_refresh_seat_ui(
+		_current_table_result
+	)
+
+	_print_debug_result(
+		_current_table_result
+	)
+
+
+func _refresh_global_ui(
+	result: TableHappinessResult,
+	placements: Array[CreatureData]
+) -> void:
+	var filled_seats: int = (
+		_count_filled_seats(
+			placements
+		)
+	)
+
+	var total_seats: int = placements.size()
+
+	var all_seats_filled: bool = (
+		total_seats > 0
+		and filled_seats == total_seats
+	)
+
+	if total_happiness_label != null:
+		if (
+			level_data.host != null
+			and level_data.host.objective_type
+			== HostData.ObjectiveType.DISCORD
+		):
+			total_happiness_label.text = (
+				"Happiness: "
+				+ str(result.total_score)
+				+ " (<= "
+				+ str(level_data.maximum_happiness)
+				+ ")"
+			)
+		else:
+			total_happiness_label.text = (
+				"Happiness: "
+				+ str(result.total_score)
+				+ " / "
+				+ str(level_data.required_happiness)
+			)
+
+	if critical_conflicts_label != null:
+		if (
+			level_data.host != null
+			and level_data.host.objective_type
+			== HostData.ObjectiveType.DISCORD
+		):
+			critical_conflicts_label.text = (
+				"Critical Conflicts: "
+				+ str(result.critical_pair_count)
+				+ " (>= "
+				+ str(level_data.minimum_critical_conflicts)
+				+ ")"
+			)
+		else:
+			critical_conflicts_label.text = (
+				"Critical Conflicts: "
+				+ str(result.critical_pair_count)
+				+ " / "
+				+ str(level_data.max_critical_conflicts)
+			)
+
+	if submit_button != null:
+		submit_button.disabled = not all_seats_filled
+
+		if all_seats_filled:
+			submit_button.text = "CHECK RESULT"
+		else:
+			submit_button.text = (
+				"CHECK RESULT ("
+				+ str(filled_seats)
+				+ "/"
+				+ str(total_seats)
+				+ " SEATS)"
+			)
+
+	if (
+		result_label != null
+		and result_label.text.is_empty()
+	):
+		if all_seats_filled:
+			result_label.text = (
+				"All seats are filled. "
+				+ "Press CHECK RESULT."
+			)
+		else:
+			result_label.text = (
+				"Place all creatures. Seats filled: "
+				+ str(filled_seats)
+				+ " / "
+				+ str(total_seats)
+			)
+
+
+func _refresh_seat_ui(
+	result: TableHappinessResult
+) -> void:
+	var slots: Array[SeatSlot] = (
+		placement_controller.get_slots()
+	)
+
+	for seat_index: int in range(
+		slots.size()
+	):
+		var slot: SeatSlot = slots[seat_index]
+
+		if slot == null:
+			continue
+
+		var creature_result: CreatureHappinessResult = (
+			result.get_result_for_seat(
+				seat_index
+			)
+		)
+
+		slot.set_happiness_result(
+			creature_result
+		)
+
+
+## =========================================================
+## RESULT CHECK
+## =========================================================
+
+func _on_submit_pressed() -> void:
+	if level_data == null:
+		return
+
+	if _current_table_result == null:
+		return
+
+	var objective_result: HostObjectiveResult = (
+		_objective_evaluator.evaluate(
+			level_data,
+			_current_table_result
+		)
+	)
+
+	_show_objective_result(
+		objective_result
+	)
+
+	_show_result_overlay(
+		objective_result
+	)
+
+	print("")
+	print("====================================")
+	print("LEVEL CHECK")
+	print("====================================")
+
+	print(
+		"All seats filled: ",
+		objective_result.all_seats_filled
+	)
+
+	print(
+		"Happiness met: ",
+		objective_result.happiness_met
+	)
+
+	print(
+		"Conflicts met: ",
+		objective_result.conflicts_met
+	)
+
+	print(
+		"LEVEL PASSED: ",
+		objective_result.passed
+	)
+
+
+func _show_objective_result(
+	objective_result: HostObjectiveResult
+) -> void:
+	if result_label == null:
+		return
+
+	if objective_result.passed:
+		if (
+			level_data.host != null
+			and level_data.host.objective_type
+			== HostData.ObjectiveType.DISCORD
+		):
+			result_label.text = (
+				"LEVEL COMPLETE!\n"
+				+ "Happiness: "
+				+ str(_current_table_result.total_score)
+				+ " (<= "
+				+ str(level_data.maximum_happiness)
+				+ ")\nCritical Conflicts: "
+				+ str(_current_table_result.critical_pair_count)
+				+ " (>= "
+				+ str(level_data.minimum_critical_conflicts)
+				+ ")"
+			)
+		else:
+			result_label.text = (
+				"LEVEL COMPLETE!\n"
+				+ "Happiness: "
+				+ str(_current_table_result.total_score)
+				+ " / "
+				+ str(level_data.required_happiness)
+				+ "\nCritical Conflicts: "
+				+ str(_current_table_result.critical_pair_count)
+				+ " / "
+				+ str(level_data.max_critical_conflicts)
+			)
+
+		return
+
+	var failure_reasons: PackedStringArray = []
+
+	if not objective_result.all_seats_filled:
+		failure_reasons.append(
+			"Fill all seats."
+		)
+
+	if (
+		level_data.host != null
+		and level_data.host.objective_type
+		== HostData.ObjectiveType.DISCORD
+	):
+		if not objective_result.happiness_met:
+			failure_reasons.append(
+				"Happiness is too high."
+			)
+
+		if not objective_result.conflicts_met:
+			failure_reasons.append(
+				"Not enough critical conflicts."
+			)
+
+		result_label.text = (
+			"LEVEL NOT COMPLETE\n"
+			+ "\n".join(failure_reasons)
+			+ "\nHappiness: "
+			+ str(_current_table_result.total_score)
+			+ " (<= "
+			+ str(level_data.maximum_happiness)
+			+ ")\nCritical Conflicts: "
+			+ str(_current_table_result.critical_pair_count)
+			+ " (>= "
+			+ str(level_data.minimum_critical_conflicts)
+			+ ")"
+		)
+
+		return
+
+	if not objective_result.happiness_met:
+		failure_reasons.append(
+			"Not enough happiness."
+		)
+
+	if not objective_result.conflicts_met:
+		failure_reasons.append(
+			"Too many critical conflicts."
+		)
+
+	result_label.text = (
+		"LEVEL NOT COMPLETE\n"
+		+ "\n".join(failure_reasons)
+		+ "\nHappiness: "
+		+ str(_current_table_result.total_score)
+		+ " / "
+		+ str(level_data.required_happiness)
+		+ "\nCritical Conflicts: "
+		+ str(_current_table_result.critical_pair_count)
+		+ " / "
+		+ str(level_data.max_critical_conflicts)
+	)
+
+
+## =========================================================
+## RESULT OVERLAY
+## =========================================================
+
 func _configure_result_overlay() -> void:
 	result_overlay.visible = false
+
 	result_overlay.color = Color(
 		0.0,
 		0.0,
@@ -239,8 +919,6 @@ func _configure_result_overlay() -> void:
 		"separation",
 		18
 	)
-
-	result_title_label.text = "LEVEL RESULT"
 
 	result_title_label.horizontal_alignment = (
 		HORIZONTAL_ALIGNMENT_CENTER
@@ -333,282 +1011,45 @@ func _connect_result_buttons() -> void:
 		)
 
 
-func _on_placement_changed() -> void:
-	if result_overlay.visible:
-		result_overlay.visible = false
-
-	if result_label != null:
-		result_label.text = ""
-
-	_refresh_happiness()
-
-
-func _refresh_level_ui() -> void:
-	if level_data == null:
-		return
-
-	if host_label != null:
-		if level_data.host != null:
-			host_label.text = (
-				"Host: "
-				+ _format_display_name(
-					String(level_data.host.id)
-				)
-			)
-		else:
-			host_label.text = "Host: None"
-
-	if objective_label != null:
-		objective_label.text = (
-			"Goal:\n"
-			+ "Happiness >= "
-			+ str(level_data.required_happiness)
-			+ "\nCritical Conflicts <= "
-			+ str(level_data.max_critical_conflicts)
-		)
-
-
-func _refresh_happiness() -> void:
-	if placement_controller == null:
-		return
-
-	if level_data == null:
-		return
-
-	var placements: Array[CreatureData] = (
-		placement_controller.get_placements()
-	)
-
-	_current_table_result = (
-		_happiness_calculator.evaluate_table(
-			placements,
-			level_data.wrap_around
-		)
-	)
-
-	_refresh_global_ui(
-		_current_table_result,
-		placements
-	)
-
-	_refresh_seat_ui(
-		_current_table_result
-	)
-
-	_print_debug_result(
-		_current_table_result
-	)
-
-
-func _refresh_global_ui(
-	result: TableHappinessResult,
-	placements: Array[CreatureData]
-) -> void:
-	var filled_seats: int = (
-		_count_filled_seats(
-			placements
-		)
-	)
-
-	var total_seats: int = placements.size()
-
-	var all_seats_filled: bool = (
-		total_seats > 0
-		and filled_seats == total_seats
-	)
-
-	if total_happiness_label != null:
-		total_happiness_label.text = (
-			"Happiness: "
-			+ str(result.total_score)
-			+ " / "
-			+ str(level_data.required_happiness)
-		)
-
-	if critical_conflicts_label != null:
-		critical_conflicts_label.text = (
-			"Critical Conflicts: "
-			+ str(result.critical_pair_count)
-			+ " / "
-			+ str(level_data.max_critical_conflicts)
-		)
-
-	if submit_button != null:
-		submit_button.disabled = not all_seats_filled
-
-		if all_seats_filled:
-			submit_button.text = "CHECK RESULT"
-		else:
-			submit_button.text = (
-				"CHECK RESULT ("
-				+ str(filled_seats)
-				+ "/"
-				+ str(total_seats)
-				+ " SEATS)"
-			)
-
-	if (
-		result_label != null
-		and result_label.text.is_empty()
-	):
-		if all_seats_filled:
-			result_label.text = (
-				"All seats are filled. "
-				+ "Press CHECK RESULT."
-			)
-		else:
-			result_label.text = (
-				"Place all creatures. Seats filled: "
-				+ str(filled_seats)
-				+ " / "
-				+ str(total_seats)
-			)
-
-
-func _refresh_seat_ui(
-	result: TableHappinessResult
-) -> void:
-	var slots: Array[SeatSlot] = (
-		placement_controller.get_slots()
-	)
-
-	for seat_index: int in range(
-		slots.size()
-	):
-		var slot: SeatSlot = slots[seat_index]
-
-		if slot == null:
-			continue
-
-		var creature_result: CreatureHappinessResult = (
-			result.get_result_for_seat(
-				seat_index
-			)
-		)
-
-		slot.set_happiness_result(
-			creature_result
-		)
-
-
-func _on_submit_pressed() -> void:
-	if level_data == null:
-		return
-
-	if _current_table_result == null:
-		return
-
-	var objective_result: HostObjectiveResult = (
-		_objective_evaluator.evaluate(
-			level_data,
-			_current_table_result
-		)
-	)
-
-	_show_objective_result(
-		objective_result
-	)
-
-	_show_result_overlay(
-		objective_result
-	)
-
-	print("")
-	print("====================================")
-	print("LEVEL CHECK")
-	print("====================================")
-
-	print(
-		"All seats filled: ",
-		objective_result.all_seats_filled
-	)
-
-	print(
-		"Happiness met: ",
-		objective_result.happiness_met
-	)
-
-	print(
-		"Conflicts met: ",
-		objective_result.conflicts_met
-	)
-
-	print(
-		"LEVEL PASSED: ",
-		objective_result.passed
-	)
-
-
-func _show_objective_result(
-	objective_result: HostObjectiveResult
-) -> void:
-	if result_label == null:
-		return
-
-	if objective_result.passed:
-		result_label.text = (
-			"LEVEL COMPLETE!\n"
-			+ "Happiness: "
-			+ str(_current_table_result.total_score)
-			+ " / "
-			+ str(level_data.required_happiness)
-			+ "\nCritical Conflicts: "
-			+ str(_current_table_result.critical_pair_count)
-			+ " / "
-			+ str(level_data.max_critical_conflicts)
-		)
-
-		return
-
-	var failure_reasons: PackedStringArray = []
-
-	if not objective_result.all_seats_filled:
-		failure_reasons.append(
-			"Fill all seats."
-		)
-
-	if not objective_result.happiness_met:
-		failure_reasons.append(
-			"Not enough happiness."
-		)
-
-	if not objective_result.conflicts_met:
-		failure_reasons.append(
-			"Too many critical conflicts."
-		)
-
-	result_label.text = (
-		"LEVEL NOT COMPLETE\n"
-		+ "\n".join(failure_reasons)
-		+ "\nHappiness: "
-		+ str(_current_table_result.total_score)
-		+ " / "
-		+ str(level_data.required_happiness)
-		+ "\nCritical Conflicts: "
-		+ str(_current_table_result.critical_pair_count)
-		+ " / "
-		+ str(level_data.max_critical_conflicts)
-	)
-
-
 func _show_result_overlay(
 	objective_result: HostObjectiveResult
 ) -> void:
 	var details: PackedStringArray = []
 
-	details.append(
-		"Happiness: "
-		+ str(_current_table_result.total_score)
-		+ " / "
-		+ str(level_data.required_happiness)
-	)
+	if (
+		level_data.host != null
+		and level_data.host.objective_type
+		== HostData.ObjectiveType.DISCORD
+	):
+		details.append(
+			"Happiness: "
+			+ str(_current_table_result.total_score)
+			+ " (<= "
+			+ str(level_data.maximum_happiness)
+			+ ")"
+		)
 
-	details.append(
-		"Critical Conflicts: "
-		+ str(_current_table_result.critical_pair_count)
-		+ " / "
-		+ str(level_data.max_critical_conflicts)
-	)
+		details.append(
+			"Critical Conflicts: "
+			+ str(_current_table_result.critical_pair_count)
+			+ " (>= "
+			+ str(level_data.minimum_critical_conflicts)
+			+ ")"
+		)
+	else:
+		details.append(
+			"Happiness: "
+			+ str(_current_table_result.total_score)
+			+ " / "
+			+ str(level_data.required_happiness)
+		)
+
+		details.append(
+			"Critical Conflicts: "
+			+ str(_current_table_result.critical_pair_count)
+			+ " / "
+			+ str(level_data.max_critical_conflicts)
+		)
 
 	if objective_result.passed:
 		result_title_label.text = (
@@ -619,6 +1060,7 @@ func _show_result_overlay(
 		details.append(
 			"The host is satisfied."
 		)
+
 	else:
 		result_title_label.text = (
 			"LEVEL NOT COMPLETE"
@@ -626,15 +1068,30 @@ func _show_result_overlay(
 
 		details.append("")
 
-		if not objective_result.happiness_met:
-			details.append(
-				"Not enough happiness."
-			)
+		if (
+			level_data.host != null
+			and level_data.host.objective_type
+			== HostData.ObjectiveType.DISCORD
+		):
+			if not objective_result.happiness_met:
+				details.append(
+					"Happiness is too high."
+				)
 
-		if not objective_result.conflicts_met:
-			details.append(
-				"Too many critical conflicts."
-			)
+			if not objective_result.conflicts_met:
+				details.append(
+					"Not enough critical conflicts."
+				)
+		else:
+			if not objective_result.happiness_met:
+				details.append(
+					"Not enough happiness."
+				)
+
+			if not objective_result.conflicts_met:
+				details.append(
+					"Too many critical conflicts."
+				)
 
 	result_details_label.text = (
 		"\n".join(details)
@@ -660,14 +1117,17 @@ func _show_result_overlay(
 		retry_button.grab_focus()
 
 
+## =========================================================
+## NAVIGATION
+## =========================================================
+
 func _get_next_level() -> LevelData:
 	if level_data == null:
 		return null
 
-	if String(level_data.id) == "level_01":
-		return LEVEL_02
-
-	return null
+	return LEVEL_CATALOG.get_next_level(
+		level_data
+	)
 
 
 func _on_next_level_pressed() -> void:
@@ -735,6 +1195,10 @@ func _on_result_back_pressed() -> void:
 			+ str(error)
 		)
 
+
+## =========================================================
+## HELPERS
+## =========================================================
 
 func _count_filled_seats(
 	placements: Array[CreatureData]

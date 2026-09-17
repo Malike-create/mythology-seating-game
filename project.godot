@@ -24,6 +24,10 @@ GameSession="*uid://dukefrmpcj63m"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/translations.en.translation", "res://localization/translations.ky.translation", "res://localization/translations.ru.translation", "res://localization/translations.tr.translation")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

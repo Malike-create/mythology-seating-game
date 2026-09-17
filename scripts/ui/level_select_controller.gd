@@ -1,20 +1,16 @@
 extends Control
 
 
+const LEVEL_CATALOG := preload(
+	"res://data/levels/level_catalog.tres"
+)
+
 const GAMEPLAY_SCENE_PATH: String = (
 	"res://scenes/gameplay/gameplay.tscn"
 )
 
 const MAIN_MENU_SCENE_PATH: String = (
 	"res://scenes/main_menu/main_menu.tscn"
-)
-
-const LEVEL_01: LevelData = preload(
-	"res://data/levels/level_01.tres"
-)
-
-const LEVEL_02: LevelData = preload(
-	"res://data/levels/level_02.tres"
 )
 
 
@@ -30,12 +26,8 @@ const LEVEL_02: LevelData = preload(
 	$CenterContainer/VBoxContainer/TitleLabel
 )
 
-@onready var level_01_button: Button = (
-	$CenterContainer/VBoxContainer/Level01Button
-)
-
-@onready var level_02_button: Button = (
-	$CenterContainer/VBoxContainer/Level02Button
+@onready var levels_container: VBoxContainer = (
+	$CenterContainer/VBoxContainer/LevelsContainer
 )
 
 @onready var back_to_main_menu_button: Button = (
@@ -45,6 +37,7 @@ const LEVEL_02: LevelData = preload(
 
 func _ready() -> void:
 	_configure_interface()
+	_build_level_buttons()
 	_connect_buttons()
 
 	if not get_viewport().size_changed.is_connected(
@@ -59,17 +52,8 @@ func _ready() -> void:
 	print("LEVEL SELECT READY")
 
 	print(
-		"Level 01 signal connected: ",
-		level_01_button.pressed.is_connected(
-			_on_level_01_pressed
-		)
-	)
-
-	print(
-		"Level 02 signal connected: ",
-		level_02_button.pressed.is_connected(
-			_on_level_02_pressed
-		)
+		"Levels in catalog: ",
+		LEVEL_CATALOG.get_level_count()
 	)
 
 	print(
@@ -85,39 +69,29 @@ func _configure_interface() -> void:
 	center_container.visible = true
 	vbox_container.visible = true
 	title_label.visible = true
-	level_01_button.visible = true
-	level_02_button.visible = true
+	levels_container.visible = true
 	back_to_main_menu_button.visible = true
 
 	custom_maximum_size = Vector2(-1.0, -1.0)
 	center_container.custom_maximum_size = Vector2(-1.0, -1.0)
 	vbox_container.custom_maximum_size = Vector2(-1.0, -1.0)
 	title_label.custom_maximum_size = Vector2(-1.0, -1.0)
-	level_01_button.custom_maximum_size = Vector2(-1.0, -1.0)
-	level_02_button.custom_maximum_size = Vector2(-1.0, -1.0)
+	levels_container.custom_maximum_size = Vector2(-1.0, -1.0)
 	back_to_main_menu_button.custom_maximum_size = Vector2(-1.0, -1.0)
 
 	title_label.text = "SELECT LEVEL"
-	level_01_button.text = "LEVEL 01"
-	level_02_button.text = "LEVEL 02"
 	back_to_main_menu_button.text = "BACK TO MAIN MENU"
 
 	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	center_container.mouse_filter = Control.MOUSE_FILTER_PASS
 	vbox_container.mouse_filter = Control.MOUSE_FILTER_PASS
+	levels_container.mouse_filter = Control.MOUSE_FILTER_PASS
 
-	level_01_button.mouse_filter = Control.MOUSE_FILTER_STOP
-	level_02_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	back_to_main_menu_button.mouse_filter = (
 		Control.MOUSE_FILTER_STOP
 	)
 
-	level_01_button.disabled = false
-	level_02_button.disabled = false
 	back_to_main_menu_button.disabled = false
-
-	level_01_button.focus_mode = Control.FOCUS_ALL
-	level_02_button.focus_mode = Control.FOCUS_ALL
 	back_to_main_menu_button.focus_mode = Control.FOCUS_ALL
 
 	title_label.horizontal_alignment = (
@@ -138,29 +112,19 @@ func _configure_interface() -> void:
 		28
 	)
 
-	level_01_button.custom_minimum_size = Vector2(
+	levels_container.custom_minimum_size = Vector2(
 		340.0,
-		58.0
+		0.0
 	)
 
-	level_02_button.custom_minimum_size = Vector2(
-		340.0,
-		58.0
+	levels_container.add_theme_constant_override(
+		"separation",
+		14
 	)
 
 	back_to_main_menu_button.custom_minimum_size = Vector2(
 		340.0,
 		58.0
-	)
-
-	level_01_button.add_theme_font_size_override(
-		"font_size",
-		22
-	)
-
-	level_02_button.add_theme_font_size_override(
-		"font_size",
-		22
 	)
 
 	back_to_main_menu_button.add_theme_font_size_override(
@@ -179,21 +143,61 @@ func _configure_interface() -> void:
 	)
 
 
+func _build_level_buttons() -> void:
+	for child: Node in levels_container.get_children():
+		child.queue_free()
+
+	for index: int in range(
+		LEVEL_CATALOG.get_level_count()
+	):
+		var level: LevelData = (
+			LEVEL_CATALOG.get_level_by_index(index)
+		)
+
+		if level == null:
+			continue
+
+		var level_button := Button.new()
+
+		level_button.text = (
+			_format_level_name(level)
+		)
+
+		level_button.custom_minimum_size = Vector2(
+			340.0,
+			58.0
+		)
+
+		level_button.add_theme_font_size_override(
+			"font_size",
+			22
+		)
+
+		level_button.mouse_filter = (
+			Control.MOUSE_FILTER_STOP
+		)
+
+		level_button.focus_mode = (
+			Control.FOCUS_ALL
+		)
+
+		level_button.pressed.connect(
+			_on_level_button_pressed.bind(
+				level
+			)
+		)
+
+		levels_container.add_child(
+			level_button
+		)
+
+		print(
+			"Created level button: ",
+			level.id
+		)
+
+
 func _connect_buttons() -> void:
-	if not level_01_button.pressed.is_connected(
-		_on_level_01_pressed
-	):
-		level_01_button.pressed.connect(
-			_on_level_01_pressed
-		)
-
-	if not level_02_button.pressed.is_connected(
-		_on_level_02_pressed
-	):
-		level_02_button.pressed.connect(
-			_on_level_02_pressed
-		)
-
 	if not back_to_main_menu_button.pressed.is_connected(
 		_on_back_to_main_menu_pressed
 	):
@@ -229,6 +233,7 @@ func _apply_layout() -> void:
 
 	center_container.queue_sort()
 	vbox_container.queue_sort()
+	levels_container.queue_sort()
 
 	print(
 		"Level select arranged: ",
@@ -236,14 +241,20 @@ func _apply_layout() -> void:
 	)
 
 
-func _on_level_01_pressed() -> void:
-	print("LEVEL 01 BUTTON PRESSED")
-	_start_level(LEVEL_01)
+func _on_level_button_pressed(
+	level: LevelData
+) -> void:
+	if level == null:
+		return
 
+	print(
+		"LEVEL BUTTON PRESSED: ",
+		level.id
+	)
 
-func _on_level_02_pressed() -> void:
-	print("LEVEL 02 BUTTON PRESSED")
-	_start_level(LEVEL_02)
+	_start_level(
+		level
+	)
 
 
 func _start_level(
@@ -260,7 +271,9 @@ func _start_level(
 		level.id
 	)
 
-	GameSession.select_level(level)
+	GameSession.select_level(
+		level
+	)
 
 	print(
 		"Opening scene: ",
@@ -281,7 +294,9 @@ func _start_level(
 
 
 func _on_back_to_main_menu_pressed() -> void:
-	print("BACK TO MAIN MENU BUTTON PRESSED")
+	print(
+		"BACK TO MAIN MENU BUTTON PRESSED"
+	)
 
 	GameSession.clear_selected_level()
 
@@ -296,3 +311,14 @@ func _on_back_to_main_menu_pressed() -> void:
 			"LevelSelect: failed to open main menu. Error: "
 			+ str(error)
 		)
+
+
+func _format_level_name(
+	level: LevelData
+) -> String:
+	return (
+		String(level.id)
+		.replace("_", " ")
+		.capitalize()
+		.to_upper()
+	)

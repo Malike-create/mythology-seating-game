@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_a2ps8"]
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_pmbs1"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_pmbs1"]
+[ext_resource type="Texture2D" uid="uid://bbcw8aw8gb3tu" path="res://art/creatures/portraits/albarsty.jpg" id="2_t6g3p"]
 
 [sub_resource type="Resource" id="Resource_lyl21"]
 script = ExtResource("1_pmbs1")
@@ -49,4 +50,5 @@ role_key = &"creature.albarsty.role"
 description_key = &"creature.albarsty.description"
 relationships = Array[ExtResource("1_a2ps8")]([SubResource("Resource_pmbs1"), SubResource("Resource_15y2r"), SubResource("Resource_fmkhe"), SubResource("Resource_y8awx")])
 ability = SubResource("Resource_lyl21")
+portrait = ExtResource("2_t6g3p")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"

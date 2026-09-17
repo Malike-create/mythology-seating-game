@@ -15,6 +15,10 @@ signal creature_dropped(
 var creature_data: CreatureData
 
 
+@onready var portrait_rect: TextureRect = (
+	$CenterContainer/VBoxContainer/PortraitRect
+)
+
 @onready var name_label: Label = (
 	$CenterContainer/VBoxContainer/NameLabel
 )
@@ -58,24 +62,48 @@ func _create_drag_preview() -> Control:
 
 	preview.custom_minimum_size = Vector2(
 		160,
-		100
+		140
+	)
+
+	var preview_vbox := VBoxContainer.new()
+
+	preview.add_child(
+		preview_vbox
+	)
+
+	var preview_portrait := TextureRect.new()
+
+	preview_portrait.custom_minimum_size = Vector2(
+		140,
+		90
+	)
+
+	preview_portrait.expand_mode = (
+		TextureRect.EXPAND_IGNORE_SIZE
+	)
+
+	preview_portrait.stretch_mode = (
+		TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	)
+
+	if creature_data.portrait != null:
+		preview_portrait.texture = (
+			creature_data.portrait
+		)
+
+	preview_vbox.add_child(
+		preview_portrait
 	)
 
 	var preview_label := Label.new()
 
-	preview_label.text = String(
-		creature_data.id
-	)
+	preview_label.text = _get_display_name()
 
 	preview_label.horizontal_alignment = (
 		HORIZONTAL_ALIGNMENT_CENTER
 	)
 
-	preview_label.vertical_alignment = (
-		VERTICAL_ALIGNMENT_CENTER
-	)
-
-	preview.add_child(
+	preview_vbox.add_child(
 		preview_label
 	)
 
@@ -180,6 +208,9 @@ func _clear_happiness_visual() -> void:
 
 
 func _refresh_visual() -> void:
+	if portrait_rect == null:
+		return
+
 	if name_label == null:
 		return
 
@@ -190,13 +221,38 @@ func _refresh_visual() -> void:
 		return
 
 	if creature_data == null:
+		portrait_rect.texture = null
 		name_label.text = "EMPTY"
 
 		_clear_happiness_visual()
 		return
 
-	name_label.text = String(
-		creature_data.id
-	)
+	portrait_rect.texture = creature_data.portrait
+	name_label.text = _get_display_name()
 
 	_clear_happiness_visual()
+
+
+func _get_display_name() -> String:
+	if creature_data == null:
+		return "EMPTY"
+
+	var key: String = String(
+		creature_data.name_key
+	)
+
+	if key.is_empty():
+		return String(
+			creature_data.id
+		)
+
+	var translated_name: String = tr(
+		key
+	)
+
+	if translated_name == key:
+		return String(
+			creature_data.id
+		)
+
+	return translated_name

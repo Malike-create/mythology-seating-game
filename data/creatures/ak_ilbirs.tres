@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_1nxco"]
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_rutmx"]
+[ext_resource type="Texture2D" uid="uid://b4rily2xdg27i" path="res://art/creatures/portraits/ak_ilbirs.jpg" id="2_2ll11"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_rutmx"]
 
 [sub_resource type="Resource" id="Resource_h0bjp"]
@@ -41,4 +42,5 @@ role_key = &"creature.ak_ilbirs.role"
 description_key = &"creature.ak_ilbirs.description"
 relationships = Array[ExtResource("1_1nxco")]([SubResource("Resource_x2wqa"), SubResource("Resource_d7is4"), SubResource("Resource_3htla")])
 ability = SubResource("Resource_h0bjp")
+portrait = ExtResource("2_2ll11")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"

@@ -45,8 +45,9 @@ func evaluate(
 			)
 
 		HostData.ObjectiveType.DISCORD:
-			push_warning(
-				"Discord objective is not implemented yet."
+			_evaluate_discord(
+				level_data,
+				result
 			)
 
 		HostData.ObjectiveType.NATURE:
@@ -69,6 +70,27 @@ func _evaluate_harmony(
 	result.conflicts_met = (
 		result.critical_conflicts
 		<= level_data.max_critical_conflicts
+	)
+
+	result.passed = (
+		result.all_seats_filled
+		and result.happiness_met
+		and result.conflicts_met
+	)
+
+
+func _evaluate_discord(
+	level_data: LevelData,
+	result: HostObjectiveResult
+) -> void:
+	result.happiness_met = (
+		result.total_happiness
+		<= level_data.maximum_happiness
+	)
+
+	result.conflicts_met = (
+		result.critical_conflicts
+		>= level_data.minimum_critical_conflicts
 	)
 
 	result.passed = (

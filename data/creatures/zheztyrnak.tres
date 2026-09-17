@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_bswct"]
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_mwi28"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_bswct"]
+[ext_resource type="Texture2D" uid="uid://bdbqy0yeqtufe" path="res://art/creatures/portraits/zhetyrnak.jpg" id="2_lyl21"]
 
 [sub_resource type="Resource" id="Resource_3wq4b"]
 script = ExtResource("1_bswct")
@@ -38,4 +39,5 @@ role_key = &"creature.zheztyrnak.role"
 description_key = &"creature.zheztyrnak.description"
 relationships = Array[ExtResource("1_mwi28")]([SubResource("Resource_bswct"), SubResource("Resource_4rel4"), SubResource("Resource_nn14g")])
 ability = SubResource("Resource_3wq4b")
+portrait = ExtResource("2_lyl21")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"

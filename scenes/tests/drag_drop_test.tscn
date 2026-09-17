@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://omw5xsw7fo7y" path="res://scripts/gameplay/placement_controller.gd" id="1_f1nnr"]
 [ext_resource type="PackedScene" uid="uid://y5m1amrh3lx0" path="res://scenes/gameplay/creature_card.tscn" id="1_lsf1l"]
 [ext_resource type="PackedScene" uid="uid://eisikle2f4oi" path="res://scenes/gameplay/seat_slot.tscn" id="3_6wqdd"]
-[ext_resource type="Resource" uid="uid://b7wj6asir27jg" path="res://data/levels/level_02.tres" id="3_47iu4"]
 [ext_resource type="Script" uid="uid://b4oyxfttcfksl" path="res://scripts/gameplay/level_scene_builder.gd" id="3_y0tod"]
 [ext_resource type="Script" uid="uid://l3j50yysa2xw" path="res://scripts/gameplay/gameplay_controller.gd" id="8_i328y"]
 
@@ -58,17 +57,8 @@ text = "CHECK RESULT "
 layout_mode = 2
 text = "Arrange all creatures "
 
-[node name="GameplayController" type="Node" parent="." unique_id=1433047611 node_paths=PackedStringArray("level_scene_builder", "placement_controller", "host_label", "objective_label", "total_happiness_label", "critical_conflicts_label", "submit_button", "result_label")]
+[node name="GameplayController" type="Node" parent="." unique_id=1433047611]
 script = ExtResource("8_i328y")
-level_data = ExtResource("3_47iu4")
-level_scene_builder = NodePath("../LevelSceneBuilder")
-placement_controller = NodePath("../PlacementController")
-host_label = NodePath("../MainColumn/StatusPanel/HostLabel")
-objective_label = NodePath("../MainColumn/StatusPanel/ObjectiveLabel")
-total_happiness_label = NodePath("../MainColumn/StatusPanel/TotalHappinessLabel")
-critical_conflicts_label = NodePath("../MainColumn/StatusPanel/CriticalConflictsLabel")
-submit_button = NodePath("../MainColumn/StatusPanel/SubmitButton")
-result_label = NodePath("../MainColumn/StatusPanel/ResultLabel")
 
 [node name="LevelSceneBuilder" type="Node" parent="." unique_id=621199627 node_paths=PackedStringArray("seats_container", "cards_container")]
 script = ExtResource("3_y0tod")

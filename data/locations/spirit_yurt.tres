@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://smrhre1yyslt"]
+
+[ext_resource type="Script" uid="uid://b5xucjokl0ejb" path="res://scripts/data/location_data.gd" id="1_h1s30"]
+[ext_resource type="Texture2D" uid="uid://caif7st6o0ih8" path="res://art/locations/spirit_yurt.jpg" id="1_j6lsn"]
+
+[resource]
+script = ExtResource("1_h1s30")
+id = &"spirit_yurt"
+name_key = &"location.spirit_yurt.name"
+description_key = &"location.spirit_yurt.description"
+background = ExtResource("1_j6lsn")
+metadata/_custom_type_script = "uid://b5xucjokl0ejb"

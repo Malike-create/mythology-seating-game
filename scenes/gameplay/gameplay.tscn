@@ -15,6 +15,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="LocationBackground" type="TextureRect" parent="." unique_id=463123345]
+custom_minimum_size = Vector2(1152, 668)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BackgroundDimmer" type="ColorRect" parent="." unique_id=1498740258]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.07058824, 0.07058824, 0.07058824, 0.39215687)
+
 [node name="PlacementController" type="Node" parent="." unique_id=734415514 node_paths=PackedStringArray("seats_container", "cards_container")]
 script = ExtResource("1_0w2j2")
 seats_container = NodePath("../MainColumn/SeatsContainer")
@@ -58,11 +77,15 @@ text = "CHECK RESULT "
 layout_mode = 2
 text = "Arrange all creatures "
 
-[node name="GameplayController" type="Node" parent="." unique_id=1433047611 node_paths=PackedStringArray("level_scene_builder", "placement_controller", "host_label", "objective_label", "total_happiness_label", "critical_conflicts_label", "submit_button", "result_label")]
+[node name="LocationLabel" type="Label" parent="MainColumn/StatusPanel" unique_id=288812544]
+layout_mode = 2
+
+[node name="GameplayController" type="Node" parent="." unique_id=1433047611 node_paths=PackedStringArray("level_scene_builder", "placement_controller", "host_label", "location_label", "objective_label", "total_happiness_label", "critical_conflicts_label", "submit_button", "result_label")]
 script = ExtResource("2_gh441")
 level_scene_builder = NodePath("../LevelSceneBuilder")
 placement_controller = NodePath("../PlacementController")
 host_label = NodePath("../MainColumn/StatusPanel/HostLabel")
+location_label = NodePath("../MainColumn/StatusPanel/LocationLabel")
 objective_label = NodePath("../MainColumn/StatusPanel/ObjectiveLabel")
 total_happiness_label = NodePath("../MainColumn/StatusPanel/TotalHappinessLabel")
 critical_conflicts_label = NodePath("../MainColumn/StatusPanel/CriticalConflictsLabel")
@@ -114,4 +137,57 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="ResultOverlay/CenterContainer/ResultPanel/ResultVBox/ButtonsRow" unique_id=349314951]
+layout_mode = 2
+
+[node name="IntroOverlay" type="ColorRect" parent="." unique_id=1832994042]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CenterContainer" type="CenterContainer" parent="IntroOverlay" unique_id=940792436]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="IntroPanel" type="PanelContainer" parent="IntroOverlay/CenterContainer" unique_id=1593173985]
+layout_mode = 2
+
+[node name="IntroVBox" type="VBoxContainer" parent="IntroOverlay/CenterContainer/IntroPanel" unique_id=1618016702]
+layout_mode = 2
+
+[node name="LevelTitleLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel/IntroVBox" unique_id=1899341107]
+layout_mode = 2
+
+[node name="LocationIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel/IntroVBox" unique_id=204314403]
+layout_mode = 2
+
+[node name="HostIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel/IntroVBox" unique_id=1071913379]
+layout_mode = 2
+
+[node name="GoalIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel/IntroVBox" unique_id=1871850745]
+layout_mode = 2
+
+[node name="StartLevelButton" type="Button" parent="IntroOverlay/CenterContainer/IntroPanel/IntroVBox" unique_id=1674695141]
+layout_mode = 2
+
+[node name="IntroPanel2" type="PanelContainer" parent="IntroOverlay/CenterContainer" unique_id=580225880]
+layout_mode = 2
+
+[node name="IntroVBox" type="VBoxContainer" parent="IntroOverlay/CenterContainer/IntroPanel2" unique_id=434418578]
+layout_mode = 2
+
+[node name="LevelTitleLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel2/IntroVBox" unique_id=316830272]
+layout_mode = 2
+
+[node name="LocationIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel2/IntroVBox" unique_id=2034947558]
+layout_mode = 2
+
+[node name="HostIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel2/IntroVBox" unique_id=170981076]
+layout_mode = 2
+
+[node name="GoalIntroLabel" type="Label" parent="IntroOverlay/CenterContainer/IntroPanel2/IntroVBox" unique_id=890248144]
+layout_mode = 2
+
+[node name="StartLevelButton" type="Button" parent="IntroOverlay/CenterContainer/IntroPanel2/IntroVBox" unique_id=529933448]
 layout_mode = 2

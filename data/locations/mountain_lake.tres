@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://dedb5bemxyid2"]
+
+[ext_resource type="Script" uid="uid://b5xucjokl0ejb" path="res://scripts/data/location_data.gd" id="1_ah7pk"]
+[ext_resource type="Texture2D" uid="uid://6u14wcel2yd8" path="res://art/locations/mountain_lake.jpg" id="1_wsa83"]
+
+[resource]
+script = ExtResource("1_ah7pk")
+id = &"mountain_lake"
+name_key = &"location.mountain_lake.name"
+description_key = &"location.mountain_lake.description"
+background = ExtResource("1_wsa83")
+metadata/_custom_type_script = "uid://b5xucjokl0ejb"

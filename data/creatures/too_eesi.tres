@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dk3f6p1g22l4k" path="res://scripts/data/creature_relation_data.gd" id="1_3b56g"]
 [ext_resource type="Script" uid="uid://dyn1fo7562cdl" path="res://scripts/data/ability_data.gd" id="1_gu12i"]
+[ext_resource type="Texture2D" uid="uid://bofbkp3io6fy0" path="res://art/creatures/portraits/too_eesi.jpg" id="2_3wq4b"]
 [ext_resource type="Script" uid="uid://bakw3q0r1xofd" path="res://scripts/data/creature_data.gd" id="2_gu12i"]
 
 [sub_resource type="Resource" id="Resource_8wp3h"]
@@ -32,4 +33,5 @@ role_key = &"creature.too_eesi.role"
 description_key = &"creature.too_eesi.description"
 relationships = Array[ExtResource("1_3b56g")]([SubResource("Resource_gu12i"), SubResource("Resource_sapv3")])
 ability = SubResource("Resource_8wp3h")
+portrait = ExtResource("2_3wq4b")
 metadata/_custom_type_script = "uid://bakw3q0r1xofd"
